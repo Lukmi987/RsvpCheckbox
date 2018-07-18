@@ -1,19 +1,36 @@
 const form = document.getElementById('registrar');
 const input = form.querySelector('input');
+
+const mainDiv = document.querySelector('.main');
 const ul = document.getElementById('invitedList');
 
-function createLI(text) {
+const div = document.createElement('div');
+const filterLabel = document.createElement('label');
+const filterCheckBox = document.createElement('input');
+
+filterLabel.textContent = "Hide those who haven't responded";
+filterCheckBox.type = 'checkbox';
+div.appendChild(filterLabel);
+div.appendChild(filterCheckBox);
+
+function createLI(text){
   const li = document.createElement('li');
-  li.textContent = text;
+  const span = document.createElement('span');
+  span.textContent = text;
+  li.appendChild(span);
   const label = document.createElement('label');
   label.textContent = 'Confirmed';
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   label.appendChild(checkbox);
   li.appendChild(label);
-  const button = document.createElement('button');
-  button.textContent = 'remove';
-  li.appendChild(button);
+  const editbutton = document.createElement('button');
+  editbutton.textContent = 'Edit';
+  li.appendChild(editbutton);
+
+  const removeButton = document.createElement('button');
+  removeButton.textContent = 'remove';
+  li.appendChild(removeButton);
   return li;
 }
 
@@ -25,23 +42,42 @@ form.addEventListener('submit', (e) => {
   ul.appendChild(li);
 });
 
-ul.addEventListener('change', (e) => {
+ul.addEventListener('change', (event) => {
   const checkbox = event.target;
+
   const checked = checkbox.checked;
   const listItem = checkbox.parentNode.parentNode;
-
   if (checked) {
-    listItem.className = 'responded';
+    listItem.className = 'responded'
   } else {
     listItem.className = '';
   }
 });
 
 ul.addEventListener('click', (e) => {
-  if (e.target.tagName === 'BUTTON') {
-    if(e.target.textContent === 'remove'){
-    const li = e.target.parentNode;
-    const ul = li.parentNode;
-    ul.removeChild(li);}
-  }
-});
+if(e.target.tagName === 'BUTTON') {
+  const button = e.target;
+  const li  = e.target.parentNode;
+  const ul = li.parentNode;
+  if(button.textContent === 'remove'){
+  ul.removeChild(li) ;
+
+  } else if(button.textContent === 'Edit'){
+
+  const span = li.firstElementChild;
+  const input = document.createElement('input');
+  input.type = 'tesxt';
+  input.value = span.textContent;
+  li.insertBefore(input, span); // new input element before the span
+  li.removeChild(span);
+  button.textContent = 'save';
+} else if (button.textContent === 'save') {
+   const input = li.firstElementChild;
+   const span = document.createElement('span');
+   span.textContent = input.value;
+   li.insertBefore(span, input);
+   li.removeChild(input);
+   button.textContent = 'Edit';
+  console.log(span);
+}
+}});
