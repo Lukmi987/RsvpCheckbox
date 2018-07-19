@@ -12,6 +12,29 @@ filterLabel.textContent = "Hide those who haven't responded";
 filterCheckBox.type = 'checkbox';
 div.appendChild(filterLabel);
 div.appendChild(filterCheckBox);
+mainDiv.insertBefore(div,ul);
+
+//filtering Confirmed guests
+filterCheckBox.addEventListener('click', (e)=>{
+const isChecked = e.target.checked;
+const list = ul.children;
+if(isChecked){
+  for (let i = 0; i < list.length; i += 1){
+    let li = list[i];
+    if (li.className === 'responded') { //means checkbox is clicked
+        li.style.display = ''; // empty string will allow it to pick up its previous style
+      } else {
+        li.style.display = 'none'; // we can hide element by setting its css display property to none
+      }
+  }
+
+} else { //case when we want to show all the guests whether they responded or not, button hide those is not clicked
+    for (let i = 0; i < list.length; i += 1){
+      let li = list[i];
+      li.style.display = '';
+    }
+  }
+});
 
 function createLI(text){
   const li = document.createElement('li');
@@ -81,3 +104,5 @@ if(e.target.tagName === 'BUTTON') {
   console.log(span);
 }
 }});
+
+//To simplify the way you manipulate a text element, you can turn it into an HTML element.
