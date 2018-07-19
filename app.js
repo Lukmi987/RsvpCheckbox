@@ -37,22 +37,25 @@ if(isChecked){
 });
 
 function createLI(text){
+  const li = document.createElement('li');
 
   function createElement(elementName,property, value){
     const element = document.createElement(elementName);
     element[property] = value;//to access the property on element we'll need to use brackets syntax
     return element;
   }
+
   function appendToLI(elementName,property, value){
     const element = createElement(elementName,property, value); //we call above function
     li.appendChild(element);
     return element;
   }
 
-  const li = document.createElement('li');
-
+//these 3 line in one function
+// const span = document.createElement('span');
+//   span.textContent = text;
+//   li.appendChild(span);
   appendToLI('span','textContent', 'text');
-
 
   //const label = createElement('label','textContent', 'Confirmed');
   //const checkbox = createElement('input','type', 'checkbox');
@@ -61,11 +64,8 @@ function createLI(text){
 // or shorter way
   appendToLI('label','textContent', 'Confirmed').appendChild(createElement('input','type','checkbox'));
 
-
   appendToLI('button','textContent', 'Edit');
-
   appendToLI('button','textContent', 'remove');
-
 
   return li;
 }
