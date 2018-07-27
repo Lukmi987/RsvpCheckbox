@@ -37,36 +37,31 @@ if(isChecked){
 });
 
 function createLI(text){
-  const li = document.createElement('li');
 
   function createElement(elementName,property, value){
     const element = document.createElement(elementName);
     element[property] = value;//to access the property on element we'll need to use brackets syntax
     return element;
   }
-
   function appendToLI(elementName,property, value){
     const element = createElement(elementName,property, value); //we call above function
     li.appendChild(element);
     return element;
   }
 
-//these 3 line in one function
-// const span = document.createElement('span');
-//   span.textContent = text;
-//   li.appendChild(span);
+  const li = document.createElement('li');
+
   appendToLI('span','textContent', 'text');
+
 
   //const label = createElement('label','textContent', 'Confirmed');
   //const checkbox = createElement('input','type', 'checkbox');
   //label.appendChild(checkbox);
-//  li.appendChild(label);
-// or shorter way
+  //  li.appendChild(label);
+  // or shorter way
   appendToLI('label','textContent', 'Confirmed').appendChild(createElement('input','type','checkbox'));
-
   appendToLI('button','textContent', 'Edit');
   appendToLI('button','textContent', 'remove');
-
   return li;
 }
 
@@ -95,27 +90,51 @@ if(e.target.tagName === 'BUTTON') {
   const button = e.target;
   const li  = e.target.parentNode;
   const ul = li.parentNode;
-  if(button.textContent === 'remove'){
-  ul.removeChild(li) ;
+  const action = button.textContent;
 
-  } else if(button.textContent === 'Edit'){
+  //we create an object called NameActions
+  const NameActions = {
+          remove: () => {
+            ul.removeChild(li);
+            },
+          Edit: () =>{
+              const span = li.firstElementChild;
+              const input = document.createElement('input');
+              input.type = 'tesxt';
+              input.value = span.textContent;
+              li.insertBefore(input, span); // new input element before the span
+              li.removeChild(span);
+              button.textContent = 'save';
+            },
+          save: () => {
+            const input = li.firstElementChild;
+            const span = document.createElement('span');
+            span.textContent = input.value;
+            li.insertBefore(span, input);
+            li.removeChild(input);
+            button.textContent = 'Edit';
+            }
+          };
 
-  const span = li.firstElementChild;
-  const input = document.createElement('input');
-  input.type = 'tesxt';
-  input.value = span.textContent;
-  li.insertBefore(input, span); // new input element before the span
-  li.removeChild(span);
-  button.textContent = 'save';
-} else if (button.textContent === 'save') {
-   const input = li.firstElementChild;
-   const span = document.createElement('span');
-   span.textContent = input.value;
-   li.insertBefore(span, input);
-   li.removeChild(input);
-   button.textContent = 'Edit';
-  console.log(span);
-}
-}});
+
+  // we added removeName func to an object NameActions and saved in to property remove, and so on ...
+  // function removeName(){
+  //   ul.removeChild(li);
+  // }
+
+NameActions[action](); // select and run action on button's name
+// All the code below can be shorten to NameActions[action]();
+//   if(button.textContent === 'remove'){
+//     // removename() function we have to call now from the object :
+//     NameActions.remove();
+//   } else if(button.textContent === 'Edit'){
+//     NameActions.edit();
+// } else if (button.textContent === 'save') {
+//     NameActions.save();
+// }
+  }
+});
+
 
 //To simplify the way you manipulate a text element, you can turn it into an HTML element.
+//B	Functions can be passed into other functions, assigned to variables, even be stored in arrays and objects.
